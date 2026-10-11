@@ -1,0 +1,52 @@
+{
+  "name": "@c0dn/opencode-loop",
+  "version": "0.1.0",
+  "description": "OpenCode v2 plugin: /loop and loop_* tools to run a prompt later or on a schedule, e.g. to keep checking an MR or deploy.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./tui": {
+      "import": "./tui.ts"
+    }
+  },
+  "files": [
+    "index.ts",
+    "tui.ts",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "loop",
+    "schedule"
+  ],
+  "author": "c0dn",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c0dn/opencode-loop.git"
+  },
+  "homepage": "https://github.com/c0dn/opencode-loop#readme",
+  "bugs": {
+    "url": "https://github.com/c0dn/opencode-loop/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opencode/plugin": "2.0.7"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.13",
+    "typescript": "^6.0.3"
+  }
+}
