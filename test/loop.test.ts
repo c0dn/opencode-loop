@@ -104,6 +104,16 @@ describe("scheduler", () => {
     expect(t.notices.at(-1)).toContain("expired")
   })
 
+  test("stopping one loop leaves the others running", async () => {
+    const t = fakeHost()
+    const a = await schedule(t.host, "s1", { every: "5m", prompt: "a" })
+    await schedule(t.host, "s1", { every: "5m", prompt: "b" })
+    expect((await stop(t.host, "s1", a.id)).map((j) => j.prompt)).toEqual(["a"])
+    expect((await listJobs(t.host, "s1")).map((j) => j.prompt)).toEqual(["b"])
+    expect(await stop(t.host, "s1", "nope")).toHaveLength(0)
+    expect(await listJobs(t.host, "s1")).toHaveLength(1)
+  })
+
   test("stop is scoped to the session", async () => {
     const t = fakeHost()
     const mine = await schedule(t.host, "s1", { every: "5m", prompt: "a" })
