@@ -58,6 +58,9 @@ export default Plugin.define({
 
     const failure = (error: unknown) => (error instanceof Error ? error.message : String(error))
     const rpc = await context.rpc.register(Loop, {
+      async list(input) {
+        return { jobs: await listJobs(host, (input as { sessionID: string }).sessionID) }
+      },
       async loop(input) {
         const { sessionID, args } = input as { sessionID: string; args: string }
         return { text: await loopCommand(host, sessionID, args.replace(/^\s*\/?loop\b/, "")).catch(failure) }

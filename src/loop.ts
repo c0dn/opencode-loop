@@ -45,8 +45,9 @@ export function parseDuration(text: string): number | undefined {
 export function formatDuration(ms: number): string {
   if (ms < 60_000) return `${Math.max(0, Math.round(ms / 1000))}s`;
   if (ms < 3600_000) return `${Math.round(ms / 60_000)}m`;
-  const hours = Math.floor(ms / 3600_000);
-  const minutes = Math.round((ms % 3600_000) / 60_000);
+  const total = Math.round(ms / 60_000);
+  const hours = Math.floor(total / 60);
+  const minutes = total % 60;
   return minutes ? `${hours}h${minutes}m` : `${hours}h`;
 }
 

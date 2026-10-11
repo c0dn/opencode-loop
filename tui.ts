@@ -1,8 +1,10 @@
 import { Plugin } from "@opencode/plugin/tui"
 
+import type { Job } from "./src/loop.ts"
 import { Loop } from "./src/rpc.ts"
+import { loopsSidebar } from "./src/sidebar.tsx"
 
-/** /loop: the server plugin does the work, this shows its replies and the loops' notices. */
+/** /loop and the sidebar's Loops section: the server plugin does the work, this shows it. */
 export default Plugin.define({
   id: "opencode-loop.tui",
   setup(context) {
@@ -38,9 +40,17 @@ export default Plugin.define({
       ],
     }))
 
-    return loop.events.on("notice", (event) => {
+    const list = async (sessionID: string) =>
+      ((await loop.list({ sessionID }, { location: locationOf(sessionID) })) as { jobs: Job[] }).jobs
+    const stopSidebar = loopsSidebar(context, list)
+
+    const stopNotices = loop.events.on("notice", (event) => {
       const { sessionID, text } = event.data as { sessionID: string; text: string }
       context.ui.toast.show({ title: context.data.session.get(sessionID)?.title ?? "Loop", message: text, duration: 10_000 })
     })
+    return () => {
+      stopSidebar()
+      stopNotices()
+    }
   },
 })

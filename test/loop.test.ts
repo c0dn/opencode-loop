@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 
-import { type Host, listJobs, loopCommand, parseDuration, schedule, stop, tick } from "../src/loop.ts"
+import { formatDuration, type Host, listJobs, loopCommand, parseDuration, schedule, stop, tick } from "../src/loop.ts"
 
 type Message = { type: string; text?: string }
 
@@ -43,6 +43,7 @@ describe("parsing", () => {
     expect(parseDuration("10m")).toBe(10 * MIN)
     expect(parseDuration("2h")).toBe(120 * MIN)
     expect(parseDuration("ten minutes")).toBeUndefined()
+    expect(formatDuration(6 * 60 * MIN - 1000)).toBe("6h")
   })
 
   test("/loop every with flags", async () => {

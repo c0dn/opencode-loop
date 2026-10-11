@@ -8,6 +8,20 @@ import { Rpc } from "@opencode/plugin/rpc"
 export const Loop = Rpc.define({
   id: "loop",
   methods: {
+    list: {
+      input: {
+        type: "object",
+        properties: { sessionID: { type: "string" } },
+        required: ["sessionID"],
+        additionalProperties: false,
+      },
+      output: {
+        type: "object",
+        properties: { jobs: { type: "array", items: { type: "object" } } },
+        required: ["jobs"],
+        additionalProperties: false,
+      },
+    },
     loop: {
       input: {
         type: "object",
